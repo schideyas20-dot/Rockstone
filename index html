@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline Mobile Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div style="text-align:center; padding:30px; font-family:sans-serif;">
+    <h1 style="color:#4facfe;">Mobile Offline App! 📱</h1>
+    <p style="color:#666;">Turn off your Wi-Fi or Mobile Data and refresh this page. It still works!</p>
+    <h3 id="net-status" style="color:#2ed573;">Status: Online</h3>
+  </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => console.log('Offline system active!'))
+          .catch(err => console.log('Error:', err));
+      });
+    }
+    const statusText = document.getElementById('net-status');
+    function updateStatus() {
+      if (navigator.onLine) {
+        statusText.innerText = "Status: Online";
+        statusText.style.color = "#2ed573";
+      } else {
+        statusText.innerText = "Status: Offline (Running locally!)";
+        statusText.style.color = "#ff4757";
+      }
+    }
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+    updateStatus();
+  </script>
+</body>
+</html>
